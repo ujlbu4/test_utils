@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 import time
 import pytz
 
-from framework.commands.assertions.constants import AssertionStatus
+from assertions.constants import AssertionStatus
 
 
 def uniq_int(bytes=4):
