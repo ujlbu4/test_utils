@@ -9,7 +9,7 @@ import pytz
 
 import operator
 
-from framework.commands.helpers.utils import dt_to_ms, dt_from_ms
+from utils.utils import dt_to_ms, dt_from_ms
 
 
 @assertion
