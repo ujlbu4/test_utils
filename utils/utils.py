@@ -6,7 +6,12 @@ from datetime import datetime, timedelta, timezone
 import time
 import pytz
 
+import allure
+import logging
+
 from assertions.constants import AssertionStatus
+
+logger = logging.getLogger(__name__)
 
 
 def uniq_int(bytes=4):
@@ -102,3 +107,69 @@ def dt_from_ms(ms):
 def dt_to_ms(dt):
     delta = dt.astimezone(pytz.UTC) - datetime.utcfromtimestamp(0).astimezone(pytz.UTC)
     return int(delta.total_seconds() * 1000)
+
+
+def print_request_as_curl(req):
+    command = """curl -iL -X {method} \\\n -H {headers} \\\n -d '{data}' \\\n '{uri}'\n"""
+    method = req.method
+    uri = req.url
+    data = req.body if req.body else ""
+    req_headers = req.headers.copy()
+
+    if isinstance(data, type(b'')):
+        data = ".... <binary data> ...."
+
+    if data:
+        data = data.replace("'", '"')
+        # limit data output
+        limit_len = 500
+        if len(data) > limit_len:
+            data = data[:limit_len] + ".... artificial truncated (data to long for print: len={len} chars) ...".format(len=len(data))
+    if 'Accept-Encoding' in req_headers:
+        # for pretty human print in console
+        del req_headers['Accept-Encoding']
+    if 'Content-Length' in req_headers:
+        del req_headers['Content-Length']
+
+    headers = ['"{0}: {1}"'.format(k, v if v else "") for k, v in req_headers.items()]
+    headers = " \\\n -H ".join(headers)
+
+    return command.format(method=method, headers=headers, data=data, uri=uri)
+
+
+def log_response(path, response):
+    print_text = True
+    if 'Content-Type' in response.headers:
+        if "image" in response.headers.get('Content-Type'):
+            print_text = False
+
+    # adjust log format
+    if len(response.history) > 0:
+        initial_request = response.history[0].request
+    else:
+        initial_request = response.request
+
+    log_format_request = "\n[request %s]: \n\t%s" % (path, print_request_as_curl(initial_request))
+    log_format_status_code = "\t[response code]: \n\t%s\n" % response.status_code
+    log_format_headers = "\t[response headers]: \n\t%s\n" % response.headers
+    log_format_text = "\t[response text]: \n\t%s\n" % (response.text if print_text else "<<omitted by test handlers>>")
+
+    log = "{request}\n{response_code}\n{response_headers}\n{response_text}".format(request=log_format_request,
+                                                                                   response_code=log_format_status_code,
+                                                                                   response_headers=log_format_headers,
+                                                                                   response_text=log_format_text)
+    logger.info(log)
+
+    try:
+        # if ENV != Environment.PROD:
+        #     # for monitoring test purposes
+        allure.attach('request debug log', "\n[request %s]: \n%s\n\n[status]: \n%s\n[headers]: \n%s\n[text]: \n%s" %
+                      (path,
+                       print_request_as_curl(initial_request),
+                       response.status_code,
+                       response.headers,
+                       response.text if print_text else "<<omitted by test handlers>>"))
+
+    except AttributeError as e:
+        # workaround for AllureTestListener not initialized during call parametrized fixtures before tests
+        pass
