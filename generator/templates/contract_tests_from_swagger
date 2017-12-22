@@ -1,0 +1,103 @@
+from tests.mustapp import *
+
+import flex
+from flex.core import load, validate_api_call
+
+@pytest.fixture()
+def api():
+    return RequestsMustAppAPI(assert_status_code=False)
+
+
+schema = flex.load(Settings.url_specification_backend_api)
+
+{% for path in schema['paths'].keys()|sort if check_generating_path(generate_for_paths=generate_for_paths, current_path_value=path) %}
+{% set path_value = path %}
+{% set path_operations = schema['paths'][path_value] %}
+{% set query_path_formated_string = prepare_parameters(schema=schema, path_value=path_value, _type="path") %}
+{% set query_all_properties = prepare_parameters(schema=schema, path_value=path_value, _type="query:all") %}
+{% set query_required_properties = prepare_parameters(schema=schema, path_value=path_value, _type="query:required") %}
+
+@{{service_name}}
+@allure.feature('{{path_value}}')
+class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|replace("}", "")|title}}:
+{% for operation in path_operations.items() %}
+{% set operation_method, operation_properties = operation[0], operation[1] %}
+{% if operation_method in ('post', 'get', 'put', 'delete', 'patch', 'head', 'options') %}
+{% set status_codes = operation_properties['responses'] %}
+{% for status_code in get_generate_for_codes(generate_for_paths=generate_for_paths, current_path_value=path_value, swagger_codes=status_codes).items() %}
+    {% set status_code_value, status_code_properties = status_code[0] | int, status_code[1] %}
+
+    {% if status_code_value < 300 %}
+        {% if query_required_properties %}
+
+    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}_all_required_params(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
+        """Case: make request with only required query params """
+        api, params = api
+        {{ 'api.headers.update({"Bearer": new_user.token})' if operation_properties['security']|length > 0 }}
+        {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
+
+        response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', params={}'.format(query_required_properties) if query_required_properties}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
+        validate_api_call(schema, raw_request=response.request, raw_response=response)
+
+        check_response(response=response, params=params, expected_success_code={{status_code_value}})
+
+        {% endif %}
+
+        {% if query_all_properties %}
+
+    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}_all_params(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
+        """Case: make request with all available query params """
+        api, params = api
+        {{ 'api.headers.update({"Bearer": new_user.token})' if operation_properties['security']|length > 0 }}
+        {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
+
+        response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', params={}'.format(query_all_properties) if query_all_properties}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
+        validate_api_call(schema, raw_request=response.request, raw_response=response)
+
+        check_response(response=response, params=params, expected_success_code={{status_code_value}})
+
+        {% endif %}
+
+        {% if not query_required_properties %}
+
+    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
+        """Case: make default request (no required query params, ..) """
+        api, params = api
+        {{ 'api.headers.update({"Bearer": new_user.token})' if operation_properties['security']|length > 0 }}
+        {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
+
+        response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
+        validate_api_call(schema, raw_request=response.request, raw_response=response)
+
+
+        check_response(response=response, params=params, expected_success_code={{status_code_value}})
+
+        {% endif %}
+    {% endif %}
+
+{% endfor %}
+
+{% if query_required_properties %}
+{% set status_code_value = 400 %}
+
+    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}_no_required_params(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
+        """Case: make request without required params """
+        api, params = api
+        {{ 'api.headers.update({"Bearer": new_user.token})' if operation_properties['security']|length > 0 }}
+        {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
+
+        response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
+        validate_api_call(schema, raw_request=response.request, raw_response=response)
+
+        check_response(response=response, params=params, expected_success_code={{status_code_value}})
+
+{% endif %}
+
+
+{% endif %}
+{% endfor %}
+{% endfor %}
