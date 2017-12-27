@@ -1,9 +1,5 @@
-# from framework.commands.dsl import Validator
 from validator.validator import Validator
 from sure import expect, ensure
-
-# from framework.commands.assertions.assertions_request import extract
-from assertions.assertions_request import extract
 
 import requests_mock
 import requests
@@ -225,4 +221,4 @@ class TestValidatorCheck:
             lambda r: r['a'].should.be.equal(1),  # correct one
             await=False,
             input_data=input_data) \
-            .should.have.raised(AssertionError) # cause "add checks" added incorrect one
+            .should.have.raised(AssertionError)  # cause "add checks" added incorrect one
