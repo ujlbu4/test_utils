@@ -1,7 +1,8 @@
-from framework.tests import *
-from framework.commands.helpers.utils import *
-from framework.commands.requests.constants import *
+import allure
+import pytest
 
+from utils.utils import todict, is_string_belong_language
+from utils.constants import Language
 from sure import expect, ensure
 
 
@@ -36,14 +37,14 @@ class TestToDictFunction:
         # include_class_attrs=True
         json_obj = todict(TestClass(), convert_private=True, include_none_fields=True, include_class_attrs=True)
         json_obj.should.have.key("class_attribute_variable").should.be.equal(1)
-        
+
     def test_not_convert_callable_methods(self):
         class TestClass:
             class_attribute_variable = 1
 
             def __init__(self, instance_attribute_variable=2):
                 self.instance_attribute_variable = instance_attribute_variable
-                
+
             def method_a(self):
                 pass
 
