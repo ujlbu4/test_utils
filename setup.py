@@ -24,9 +24,9 @@ setup(
     author_email='ilya.shubkin@gmail.com',
     url='https://github.com/ujlbu4/test_utils',
     include_package_data=True,
-    # install_requires=[
-    #     "",
-    # ],
+    install_requires=[
+        "pytz==2017.2",
+    ],
     license="BSD???",
     zip_safe=False,
     packages=find_packages(exclude=["tests", "tests.*"]),
