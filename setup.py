@@ -25,7 +25,10 @@ setup(
     url='https://github.com/ujlbu4/test_utils',
     include_package_data=True,
     install_requires=[
+        "humanize==0.5.1",
         "pytz==2017.2",
+        "pyhocon==0.3.38",
+        "requests==2.18.1",
     ],
     license="BSD???",
     zip_safe=False,
