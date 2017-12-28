@@ -13,6 +13,7 @@ version = '0.1'
 
 readme = open(os.path.join(DIR, 'README.md')).read()
 
+# todo: pack modules inside test_utils (now they packing out of test_utils)
 
 setup(
     name='test_utils',
@@ -23,16 +24,9 @@ setup(
     author_email='ilya.shubkin@gmail.com',
     url='https://github.com/ujlbu4/test_utils',
     include_package_data=True,
-    # install_requires=[
-    #     "six>=1.7.3",
-    #     "PyYAML>=3.11",
-    #     "validate-email>=1.2",
-    #     "rfc3987>=1.3.4",
-    #     "requests>=2.4.3",
-    #     "strict-rfc3339>=0.7",
-    #     "click>=3.3",
-    #     "jsonpointer>=1.7",
-    # ],
+    install_requires=[
+        "pitz==2017.2",
+    ],
     license="BSD???",
     zip_safe=False,
     packages=find_packages(exclude=["tests", "tests.*"]),
