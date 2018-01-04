@@ -1,9 +1,9 @@
 import allure
 import pytest
+import sure
 
-from utils.utils import todict, is_string_belong_language
-from utils.constants import Language
-from sure import expect, ensure
+from test_utils.utils.utils import todict, is_string_belong_language
+from test_utils.utils.constants import Language
 
 
 @allure.feature('framework utils')

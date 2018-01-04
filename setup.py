@@ -9,7 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup, find_packages
 
-version = '0.3.5'
+version = '0.4.0'
 
 readme = open(os.path.join(DIR, 'README.md')).read()
 
@@ -31,15 +31,15 @@ setup(
     ],
     license="MIT",
     zip_safe=False,
-    packages=find_packages(exclude=["tests", "tests.*"]),
+    packages=find_packages(exclude=["*tests*"]),
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     package_data={
         # If any package contains configs/*.conf and templates/* files, include them:
         '': [
-            'templates/*',  # at least generator package
-            'configs/*.conf'  # at least validator package
+            '*templates/*',  # at least generator package
+            '*configs/*.conf'  # at least validator package
         ],
     },
     classifiers=[

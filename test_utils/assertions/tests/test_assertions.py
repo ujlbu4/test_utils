@@ -1,7 +1,7 @@
 from . import *  # import common imports from __init__
 
 from sure import expect, ensure
-from assertions.assertions_request import *
+from test_utils.assertions.assertions_request import *
 
 from dateutil.tz import tzoffset
 import allure

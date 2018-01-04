@@ -1,5 +1,5 @@
-from validator.validator import Validator
-from sure import expect, ensure
+from test_utils.validator.validator import Validator
+from sure import expect
 
 import requests_mock
 import requests

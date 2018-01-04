@@ -9,7 +9,7 @@ import pytz
 import allure
 import logging
 
-from assertions.constants import AssertionStatus
+from test_utils.assertions.constants import AssertionStatus
 
 logger = logging.getLogger(__name__)
 
