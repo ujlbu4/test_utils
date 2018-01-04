@@ -16,7 +16,7 @@ readme = open(os.path.join(DIR, 'README.md')).read()
 # todo: pack modules inside test_utils (now they packing out of test_utils)
 
 setup(
-    name='test_utils',
+    name='ujlbu4_test_utils',
     version=version,
     description="""Common test utils""",
     long_description=readme,
