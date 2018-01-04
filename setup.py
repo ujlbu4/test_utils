@@ -9,7 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup, find_packages
 
-version = '0.3.2'
+version = '0.3.4'
 
 readme = open(os.path.join(DIR, 'README.md')).read()
 
@@ -35,7 +35,7 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={
         # If any package contains *.conf files, include them:
-        '': ['*.conf'],
+        # '': ['*.conf'],
     },
     # classifiers=[
     #     'Development Status :: 2 - Pre-Alpha',
