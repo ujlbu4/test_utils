@@ -1,6 +1,7 @@
 include README.md
 include requirements.txt
 
+global-include configs/*.conf
 global-exclude tests/*
 
 # not necessary ci distribution with .gitignore such files
