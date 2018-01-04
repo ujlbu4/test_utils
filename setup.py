@@ -16,7 +16,7 @@ readme = open(os.path.join(DIR, 'README.md')).read()
 # todo: pack modules inside test_utils (now they packing out of test_utils)
 
 setup(
-    name='ujlbu4_test_utils',
+    name='test_utils',
     version=version,
     description="""Common test utils""",
     long_description=readme,
@@ -29,10 +29,12 @@ setup(
         "pyhocon==0.3.38",
         "requests==2.18.1",
     ],
-    license="BSD???",
+    license="MIT",
     zip_safe=False,
     packages=find_packages(exclude=["tests", "tests.*"]),
-    # packages=find_packages(),
+
+    # If there are data files included in your packages that need to be
+    # installed, specify them here.
     package_data={
         # If any package contains configs/*.conf and templates/* files, include them:
         '': [
@@ -40,15 +42,14 @@ setup(
             'configs/*.conf'  # at least validator package
         ],
     },
-    # classifiers=[
-    #     'Development Status :: 2 - Pre-Alpha',
-    #     'Intended Audience :: Developers',
-    #     'License :: OSI Approved :: BSD License',
-    #     'Natural Language :: English',
-    #     'Programming Language :: Python :: 2',
-    #     'Programming Language :: Python :: 2.7',
-    #     'Programming Language :: Python :: 3',
-    #     'Programming Language :: Python :: 3.3',
-    #     'Programming Language :: Python :: 3.4',
-    # ],
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+
+        'Intended Audience :: QA Developers',
+        'Topic :: Software Development :: QA Testing Tools',
+
+        'License :: OSI Approved :: MIT License',
+
+        'Programming Language :: Python :: 3.6',
+    ],
 )
