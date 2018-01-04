@@ -29,6 +29,7 @@ setup(
         "pytz==2017.2",
         "pyhocon==0.3.38",
         "requests==2.18.1",
+        "setuptools_scm==1.15.5",
     ],
     license="BSD???",
     zip_safe=False,
@@ -37,8 +38,6 @@ setup(
         # If any package contains *.conf files, include them:
         # '': ['*.conf'],
     },
-    use_scm_version=True,
-    setup_requires=['setuptools_scm'],
 
     # classifiers=[
     #     'Development Status :: 2 - Pre-Alpha',
