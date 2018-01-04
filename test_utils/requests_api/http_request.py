@@ -2,7 +2,7 @@
 # from framework.commands.settings import ENV, Environment
 
 import logging
-from utils.utils import log_response
+from test_utils.utils.utils import log_response
 
 logger = logging.getLogger(__name__)
 

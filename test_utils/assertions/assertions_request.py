@@ -1,15 +1,14 @@
-from sure import assertion, chain, chainproperty
+from sure import assertion, chain
 from sure.core import DeepComparison, DeepExplanation
 from sure.compat import safe_repr
-from sure.terminal import red, green, yellow
+from sure.terminal import red, green
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from dateutil import parser
-import pytz
 
 import operator
 
-from utils.utils import dt_to_ms, dt_from_ms
+from test_utils.utils.utils import dt_from_ms
 
 
 @assertion

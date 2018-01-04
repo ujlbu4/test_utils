@@ -1,4 +1,4 @@
-from sure import assertion, chain, chainproperty, ensure
+from sure import chain, ensure
 # from sure.core import DeepComparison, DeepExplanation
 # from sure.compat import safe_repr
 # from sure.terminal import red, green, yellow
@@ -8,14 +8,12 @@ import requests
 # from dateutil import parser
 
 import pytest
-import allure
 import humanize
 
 # from framework.commands.requests.helpers import *
 # from framework.commands.assertions.constants import *
 # from framework.commands.requests.constants import *
-from utils.utils import *
-
+from test_utils.utils.utils import *
 
 @chain
 def downloadable(self, allow_redirects=False):

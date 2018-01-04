@@ -2,7 +2,7 @@
 
 # from framework.commands.settings import ENV, Settings
 # from framework.commands.requests.helpers import log_response
-from utils.utils import log_response
+from test_utils.utils.utils import log_response
 
 import allure
 import pytest
@@ -13,9 +13,8 @@ from datetime import timedelta
 import time
 from enum import Enum
 import inspect
-import traceback, sys
 
-import configs
+from test_utils import configs
 
 logger = logging.getLogger(__name__)
 config = configs.load(__file__)
