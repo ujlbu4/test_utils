@@ -23,22 +23,23 @@ setup(
     author='Ilya Shubkin',
     author_email='ilya.shubkin@gmail.com',
     url='https://github.com/ujlbu4/test_utils',
-    include_package_data=True,
     install_requires=[
         "humanize==0.5.1",
         "pytz==2017.2",
         "pyhocon==0.3.38",
         "requests==2.18.1",
-        "setuptools_scm==1.15.5",
     ],
     license="BSD???",
     zip_safe=False,
     packages=find_packages(exclude=["tests", "tests.*"]),
+    # packages=find_packages(),
     package_data={
-        # If any package contains *.conf files, include them:
-        # '': ['*.conf'],
+        # If any package contains configs/*.conf and templates/* files, include them:
+        '': [
+            'templates/*',  # at least generator package
+            'configs/*.conf'  # at least validator package
+        ],
     },
-
     # classifiers=[
     #     'Development Status :: 2 - Pre-Alpha',
     #     'Intended Audience :: Developers',
