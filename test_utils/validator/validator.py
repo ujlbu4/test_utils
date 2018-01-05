@@ -17,7 +17,7 @@ import inspect
 from test_utils import configs
 
 logger = logging.getLogger(__name__)
-config = configs.load(__file__)
+config = configs.load_config(__file__)
 
 
 class Validator:
