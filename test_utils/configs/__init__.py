@@ -58,9 +58,9 @@ def load_config(file, is_root=False):
 
     global config
     if is_root:
-        config = ConfigTree.merge_configs(c, config)
-    else:
         config = ConfigTree.merge_configs(config, c)
+    else:
+        config = ConfigTree.merge_configs(c, config)
 
     return config
 
