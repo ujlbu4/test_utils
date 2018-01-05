@@ -35,7 +35,7 @@ class Validator:
 
     def __init__(self, response=None, await_timeout=None):
         if await_timeout is None:
-            await_timeout = config['validator.await_timeout_secs']
+            await_timeout = config.get("validator.await_timeout_secs")
 
         self._await_timeout = await_timeout
         self._sleep_time = 1
