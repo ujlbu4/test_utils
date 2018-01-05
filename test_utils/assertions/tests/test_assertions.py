@@ -234,7 +234,8 @@ class TestAlmostEqualMixedDates:
         expect(result).almost_equal.when.called_with(self.test_now_datetime + datetime.timedelta(seconds=+11),
                                                      acceptable_delta_sec=10).should.have.raised(AssertionError)
 
-
+@allure.feature('framework assertions')
+@allure.story('assertion sorted_by')
 class TestSorted:
     def test_positive_ge(self):
         lst = [3, 3, 2, 1]
