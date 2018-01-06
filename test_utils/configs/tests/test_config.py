@@ -95,7 +95,7 @@ class TestConfig:
         config = configs.collapse_environment(config, env="prod")
 
         config.get("facade.base_url").should.be.equal("http://base.url")
-        expect(config.get).when.called_with("base_url~qa").should.have.raised(ConfigMissingException)
+        expect(config.get).when.called_with("facade.base_url~qa").should.have.raised(ConfigMissingException)
 
     def test_collapse_config_env_vars_empty_env(self):
         # empty env

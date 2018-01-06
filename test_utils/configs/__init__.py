@@ -87,4 +87,4 @@ def collapse_environment(config, env):
             if k.find("~") < 0: # not found
                 result.put(item, TypesafeConfigFactory.from_dict({k: v}), append=True)
 
-    return config
+    return result
