@@ -81,9 +81,10 @@ def collapse_environment(config, env):
     config = merge_configs(config, env_config)
 
     # remove others env attrs
+    result = ConfigTree()
     for item in config:
         for k, v in config[item].items():
-            if k.find("~") > 0:
-                del config[item][k]
+            if k.find("~") < 0: # not found
+                result.put(item, TypesafeConfigFactory.from_dict({k: v}), append=True)
 
     return config

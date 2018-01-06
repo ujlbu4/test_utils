@@ -79,7 +79,7 @@ class TestConfig:
         config.get("facade.base_url~qa").should.be.equal("http://config1-qa.url")
         config.get("logging.config").should.be.equal("config1.yaml")
 
-    def test_collapse_config_env_vars(self):
+    def test_collapse_config_env_vars_exist_env(self):
         config = ConfigFactory.from_dict({"facade": {"base_url": "http://base.url",
                                                      "base_url~qa": "http://base-qa.url"}})
 
@@ -87,6 +87,7 @@ class TestConfig:
 
         config.get("facade.base_url").should.be.equal("http://base-qa.url")
 
+    def test_collapse_config_env_vars_unexist_env(self):
         # un-exist env
         config = ConfigFactory.from_dict({"facade": {"base_url": "http://base.url",
                                                      "base_url~qa": "http://base-qa.url"}})
@@ -95,6 +96,7 @@ class TestConfig:
 
         config.get("facade.base_url").should.be.equal("http://base.url")
 
+    def test_collapse_config_env_vars_empty_env(self):
         # empty env
         config = ConfigFactory.from_dict({"facade": {"base_url": "http://base.url",
                                                      "base_url~qa": "http://base-qa.url"}})
@@ -102,3 +104,11 @@ class TestConfig:
         config = configs.collapse_environment(config, env="")
 
         config.get("facade.base_url").should.be.equal("http://base.url")
+
+    def test_collapse_config_env_vars_empty_base(self):
+        # empty base
+        config = ConfigFactory.from_dict({"facade": {"base_url~qa": "http://base-qa.url"}})
+
+        config = configs.collapse_environment(config, env="qa")
+
+        config.get("facade.base_url").should.be.equal("http://base-qa.url")
