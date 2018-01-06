@@ -66,3 +66,15 @@ class TestConfig:
 
         # facade.base_url rewrite by file config
         config.get("facade.base_url").should.be.equal("http://from_file.url")
+
+    def test_load(self):
+        config = configs._load(__file__, config_folder_name="data", application_conf="config1.conf", reference_conf="config2.conf")
+
+        config.get("facade.base_url").should.be.equal("http://config1.url")
+        config.get("logging.config").should.be.equal("config1.yaml")
+
+    def test_load_tilda(self):
+        config = configs._load(__file__, config_folder_name="data", application_conf="config1.conf", reference_conf="config2.conf")
+
+        config.get("facade.base_url~qa").should.be.equal("http://config1-qa.url")
+        config.get("logging.config").should.be.equal("config1.yaml")
