@@ -62,3 +62,28 @@ def load_config(file, is_root=False, current_config=config):
 def set_global(new_conf):
     global config
     config = new_conf
+
+
+def collapse_environment(config, env):
+    env_config = ConfigTree()
+
+    if not env:
+        return config
+
+    # filter env attr
+    for item in config:
+        for k, v in config[item].items():
+            if k.find("~{env}".format(env=env)) > 0:
+                k = k.replace("~{env}".format(env=env), "")
+                env_config.put(item, TypesafeConfigFactory.from_dict({k: v}), append=True)
+
+    # merge env values to source config
+    config = merge_configs(config, env_config)
+
+    # remove others env attrs
+    for item in config:
+        for k, v in config[item].items():
+            if k.find("~") > 0:
+                del config[item][k]
+
+    return config

@@ -78,3 +78,27 @@ class TestConfig:
 
         config.get("facade.base_url~qa").should.be.equal("http://config1-qa.url")
         config.get("logging.config").should.be.equal("config1.yaml")
+
+    def test_collapse_config_env_vars(self):
+        config = ConfigFactory.from_dict({"facade": {"base_url": "http://base.url",
+                                                     "base_url~qa": "http://base-qa.url"}})
+
+        config = configs.collapse_environment(config, env="qa")
+
+        config.get("facade.base_url").should.be.equal("http://base-qa.url")
+
+        # un-exist env
+        config = ConfigFactory.from_dict({"facade": {"base_url": "http://base.url",
+                                                     "base_url~qa": "http://base-qa.url"}})
+
+        config = configs.collapse_environment(config, env="prod")
+
+        config.get("facade.base_url").should.be.equal("http://base.url")
+
+        # empty env
+        config = ConfigFactory.from_dict({"facade": {"base_url": "http://base.url",
+                                                     "base_url~qa": "http://base-qa.url"}})
+
+        config = configs.collapse_environment(config, env="")
+
+        config.get("facade.base_url").should.be.equal("http://base.url")
