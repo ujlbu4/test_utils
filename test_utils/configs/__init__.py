@@ -19,7 +19,8 @@ def _load(src_invoking_file, config_folder_name="configs", application_conf="app
                                                                                   reference_conf=reference_conf),
                     required=False)
 
-    c = merge_configs(local_reference_conf, local_application_conf)
+    # c = merge_configs(local_reference_conf, local_application_conf)
+    c = local_application_conf.with_fallback(local_reference_conf)
 
     return c
 
@@ -84,7 +85,7 @@ def collapse_environment(config, env):
     result = ConfigTree()
     for item in config:
         for k, v in config[item].items():
-            if k.find("~") < 0: # not found
+            if k.find("~") < 0:  # not found
                 result.put(item, TypesafeConfigFactory.from_dict({k: v}), append=True)
 
     return result
