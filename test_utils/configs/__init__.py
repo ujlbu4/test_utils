@@ -2,6 +2,7 @@ from pyhocon import ConfigFactory as TypesafeConfigFactory, ConfigTree
 
 import os
 
+# will import only once, so it will store all updates (unless it will be override)
 config = ConfigTree(root=True)
 
 
@@ -50,13 +51,14 @@ def merge_root(config_current, config_from_file, is_root):
     return updated_conf
 
 
-def load_config(file, is_root=False, current_config=config):
+def load_config(file, is_root=False):
     # if not isinstance(current_config, ConfigTree):
     #     raise TypeError('A current_config must be a [{}] type'.format(ConfigTree))
+    global config
 
     c = _load(file)
 
-    updated_conf = merge_root(current_config, c, is_root)
+    updated_conf = merge_root(config, c, is_root)
 
     set_global(updated_conf)
     return updated_conf
