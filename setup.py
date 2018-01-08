@@ -9,7 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup, find_packages
 
-version = '0.6.4'
+version = '0.6.5'
 
 readme = open(os.path.join(DIR, 'README.md')).read()
 
@@ -27,6 +27,7 @@ setup(
         "humanize==0.5.1",
         "pytz==2017.2",
         "pyhocon==0.3.38",
+        "python-dateutil==2.6.0",
         "requests==2.18.1",
     ],
     license="MIT",
