@@ -8,16 +8,18 @@ config = ConfigTree(root=True)
 def _load(src_invoking_file, config_folder_name="configs", application_conf="application.conf", reference_conf="reference.conf"):
     package_path = os.path.dirname(src_invoking_file)
 
-    local_application_conf = TypesafeConfigFactory \
-        .parse_file('{package_path}/{config_folder_name}/{application_conf}'.format(package_path=package_path,
-                                                                                    config_folder_name=config_folder_name,
-                                                                                    application_conf=application_conf),
-                    required=False)
-    local_reference_conf = TypesafeConfigFactory \
-        .parse_file('{package_path}/{config_folder_name}/{reference_conf}'.format(package_path=package_path,
-                                                                                  config_folder_name=config_folder_name,
-                                                                                  reference_conf=reference_conf),
-                    required=False)
+    local_application_conf = ConfigTree(TypesafeConfigFactory
+                                        .parse_file('{package_path}/{config_folder_name}/{application_conf}'
+                                                    .format(package_path=package_path,
+                                                            config_folder_name=config_folder_name,
+                                                            application_conf=application_conf),
+                                                    required=False))
+    local_reference_conf = ConfigTree(TypesafeConfigFactory
+                                      .parse_file('{package_path}/{config_folder_name}/{reference_conf}'
+                                                  .format(package_path=package_path,
+                                                          config_folder_name=config_folder_name,
+                                                          reference_conf=reference_conf),
+                                                  required=False))
 
     # c = merge_configs(local_reference_conf, local_application_conf)
     c = local_application_conf.with_fallback(local_reference_conf)

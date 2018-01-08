@@ -79,6 +79,11 @@ class TestConfig:
         config.get("facade.base_url~qa").should.be.equal("http://config1-qa.url")
         config.get("logging.config").should.be.equal("config1.yaml")
 
+    def test_load_empty_configs(self):
+        config = configs._load(__file__, config_folder_name="data", application_conf="unexist1.conf", reference_conf="unexist2.conf")
+
+        config.as_plain_ordered_dict().should.be.equal({})
+
     def test_collapse_config_env_vars_exist_env(self):
         config = ConfigFactory.from_dict({"facade": {"base_url": "http://base.url",
                                                      "base_url~qa": "http://base-qa.url"}})
