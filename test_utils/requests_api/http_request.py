@@ -1,6 +1,3 @@
-# from framework.commands.requests.helpers import *
-# from framework.commands.settings import ENV, Environment
-
 import logging
 from test_utils.utils.utils import log_response
 
