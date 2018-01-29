@@ -4,7 +4,9 @@ from jinja2 import Environment, FileSystemLoader
 import json
 
 import flex
-from framework.commands.settings import Settings
+from test_utils import configs
+
+config = configs.load_config(__file__)
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ENVIRONMENT = Environment(
@@ -19,11 +21,11 @@ def render_template(template_filename, context):
     return TEMPLATE_ENVIRONMENT.get_template(template_filename).render(context)
 
 
-schema = flex.load(Settings.url_specification_backend_api['v105'])
+schema = flex.load(configs.config.get("facade.specification_url.v65"))
 # schema = flex.load(Settings.url_specification_admin_api)
 
 generate_for_paths = [
-    {'path': '/acc/facebook', 'codes': ['200', '201', '202', '204']},
+    # {'path': '/acc/facebook', 'codes': ['200', '201', '202', '204']},
     # {'path': '/data', 'codes': ['200', '201', '202', '204']},
     # {'path': '/data/want', 'codes': ['200', '201', '202', '204']},
     # {'path': '/data/want/import', 'codes': ['200', '201', '202', '204']},
@@ -83,6 +85,7 @@ generate_for_paths = [
     # {'path': '/profile/user_id/{user_id}/rates', 'codes': ['200', '201', '202', '204']},
     # {'path': '/profile/{uri}', 'codes': ['200', '201', '202', '204']},
     # {'path': '/profile/{uri}/image', 'codes': ['200', '201', '202', '204']},
+    {'path': '/push_messages/{notification_id}', 'codes': ['200', '201', '202', '204']},
     # {'path': '/search', 'codes': ['200', '201', '202', '204']},
     # {'path': '/settings', 'codes': ['200', '201', '202', '204']},
     # {'path': '/tracking', 'codes': ['200', '201', '202', '204']},
