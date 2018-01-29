@@ -24,6 +24,7 @@ setup(
     author_email='ilya.shubkin@gmail.com',
     url='https://github.com/ujlbu4/test_utils',
     install_requires=[
+        "Jinja2==2.9.6",
         "humanize==0.5.1",
         "pytz==2017.2",
         "pyhocon==0.3.38",
