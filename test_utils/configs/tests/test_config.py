@@ -124,3 +124,19 @@ class TestConfig:
         config = configs.collapse_environment(config, env="qa")
 
         config.get("facade.base_url").should.be.equal("http://base-qa.url")
+
+    def test_collapse_config_env_vars_nested_vars(self):
+        config = ConfigFactory.from_dict(
+            {"kafka":
+                {"topics":
+                    {
+                        "user_commands": "base",
+                        "user_commands~qa": "qa"
+                    }
+                }
+            }
+        )
+
+        config = configs.collapse_environment(config, env="qa")
+
+        config.get("kafka.topics.user_commands").should.be.equal("qa")

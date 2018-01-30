@@ -77,7 +77,14 @@ def collapse_environment(config, env):
 
     # filter env attr
     for item in config:
+        if not isinstance(config[item], dict):
+            continue
+
         for k, v in config[item].items():
+            if isinstance(config[item], dict):
+                # update nested elements
+                config[item] = collapse_environment(config[item], env)
+
             if k.find("~{env}".format(env=env)) > 0:
                 k = k.replace("~{env}".format(env=env), "")
                 env_config.put(item, TypesafeConfigFactory.from_dict({k: v}), append=True)
@@ -88,6 +95,11 @@ def collapse_environment(config, env):
     # remove others env attrs
     result = ConfigTree()
     for item in config:
+        if not isinstance(config[item], dict):
+            if item.find("~") < 0:  # not found
+                result.put(item, config[item])
+            continue
+
         for k, v in config[item].items():
             if k.find("~") < 0:  # not found
                 result.put(item, TypesafeConfigFactory.from_dict({k: v}), append=True)
