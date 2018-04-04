@@ -30,7 +30,7 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
     {% if status_code_value < 300 %}
         {% if query_required_properties %}
 
-    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    @allure.story('{{operation_method}}')
     def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}_all_required_params(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
         """Case: make request with only required query params """
         api, params = api
@@ -38,7 +38,6 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
         {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
 
         response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', params={}'.format(query_required_properties) if query_required_properties}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
-        validate_api_call(schema, raw_request=response.request, raw_response=response)
 
         check_response(response=response, params=params, expected_success_code={{status_code_value}})
 
@@ -46,7 +45,7 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
 
         {% if query_all_properties %}
 
-    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    @allure.story('{{operation_method}}')
     def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}_all_params(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
         """Case: make request with all available query params """
         api, params = api
@@ -54,7 +53,6 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
         {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
 
         response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', params={}'.format(query_all_properties) if query_all_properties}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
-        validate_api_call(schema, raw_request=response.request, raw_response=response)
 
         check_response(response=response, params=params, expected_success_code={{status_code_value}})
 
@@ -62,7 +60,7 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
 
         {% if not query_required_properties %}
 
-    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    @allure.story('{{operation_method}}')
     def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
         """Case: make default request (no required query params, ..) """
         api, params = api
@@ -70,8 +68,6 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
         {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
 
         response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
-        validate_api_call(schema, raw_request=response.request, raw_response=response)
-
 
         check_response(response=response, params=params, expected_success_code={{status_code_value}})
 
@@ -83,7 +79,7 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
 {% if query_required_properties %}
 {% set status_code_value = 400 %}
 
-    @allure.story('{{operation_method}}', '{{status_code_value}}')
+    @allure.story('{{operation_method}}')
     def test_{{ operation_properties['operationId']|replace("-", "_")|lower }}_{{status_code_value}}_no_required_params(self, api{{ ', new_user' if operation_properties['security']|length > 0 }}):
         """Case: make request without required params """
         api, params = api
@@ -91,7 +87,6 @@ class Test{{path_value|replace("/", "")|replace("-", "_")|replace("{", "")|repla
         {% set body_properties = prepare_parameters(schema=schema, path_value=path_value, _type="body", operation=operation_method) %}
 
         response = api.execute_request(requests.{{operation_method}}, {{query_path_formated_string}}{{', data=json.dumps({})'.format(body_properties) if body_properties}})
-        validate_api_call(schema, raw_request=response.request, raw_response=response)
 
         check_response(response=response, params=params, expected_success_code={{status_code_value}})
 
